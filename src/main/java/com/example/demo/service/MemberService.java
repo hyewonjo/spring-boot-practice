@@ -1,15 +1,29 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
+import com.example.demo.domain.Role;
+import com.example.demo.domain.dto.MemberDTO;
 import com.example.demo.repository.MemberRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
+    private final Logger logger = LoggerFactory.getLogger(MemberService.class);
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
@@ -18,20 +32,24 @@ public class MemberService {
     /**
      * 회원가입
      *
-     * @param member
+     * @param memberDTO
      * @return
      */
-    public Long join(Member member) {
+    public Long join(MemberDTO memberDTO) {
         // loginId 중복 체크
-        validateDuplicateMember(member);
-        memberRepository.save(member);
-        return member.getId();
+        validateDuplicateMember(memberDTO);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        // 비밀번호 암호화
+        memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+
+        return memberRepository.save(memberDTO.toEntity()).getId();
     }
 
-    private void validateDuplicateMember(Member member) {
-        memberRepository.findByLoginId(member.getLoginId())
+    private void validateDuplicateMember(MemberDTO memberDTO) {
+        memberRepository.findByLoginId(memberDTO.getLoginId())
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new IllegalStateException("이미 존재하는 ID입니다.");
                 });
     }
 
@@ -48,5 +66,23 @@ public class MemberService {
      */
     public Optional<Member> findOne(Long id) {
         return memberRepository.findById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        logger.debug(loginId);
+
+        Member member = memberRepository.findByLoginId(loginId).get();
+
+        logger.debug(member.toString());
+        logger.debug(member.getPassword());
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (member.getLoginId().equals("hyewonj")) {
+            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+        }
+
+        return new User(member.getLoginId(), member.getPassword(), authorities);
     }
 }

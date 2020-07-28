@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
+import com.example.demo.domain.dto.MemberDTO;
 import com.example.demo.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,12 +23,10 @@ class MemberServiceTest {
     @Test
     void join() {
         // given
-        Member member1 = new Member();
-        member1.setLoginId("hyewon");
-        member1.setPassword("asdf1234");
-
+        MemberDTO memberDTO1 = new MemberDTO("hyewon", "asdf1234");
+        Member member1 = memberDTO1.toEntity();
         // when
-        Long saveId = memberService.join(member1);
+        Long saveId = memberService.join(memberDTO1);
 
         // then
         Member findMember = memberService.findOne(saveId).get();
@@ -36,18 +37,13 @@ class MemberServiceTest {
     @Test
     void 회원가입_중복테스트() {
         // given
-        Member member1 = new Member();
-        member1.setLoginId("hyewon");
-        member1.setPassword("asdf1234");
-
-        Member member2 = new Member();
-        member2.setLoginId("hyewon");
-        member2.setPassword("asdf1234");
+        MemberDTO memberDTO1 = new MemberDTO("hyewon", "asdf1234");
+        MemberDTO memberDTO2 = new MemberDTO("hyewon", "asdf1234");
 
         // when
-        memberService.join(member1);
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
-        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+        memberService.join(memberDTO1);
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(memberDTO2));
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 ID입니다.");
     }
 
     @Test
@@ -56,5 +52,12 @@ class MemberServiceTest {
 
     @Test
     void findOne() {
+    }
+
+    @Test
+    void testJoin() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println(passwordEncoder.encode("asdf1234"));
+        System.out.println(passwordEncoder.matches( "asdf1234", "$2a$10$M3NgvkT/u7v8Yfc1Vamzr.FMASczsjEfTEA/OcJQZoS1v0dsjCrFK"));
     }
 }
