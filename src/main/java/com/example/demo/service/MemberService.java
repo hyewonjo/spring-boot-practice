@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,8 +75,20 @@ public class MemberService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (member.getLoginId().equals("hyewonj")) {
-            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+        switch (member.getLoginId()) {
+            case "admin":
+                authorities.addAll(Arrays.asList(
+                        new SimpleGrantedAuthority(Role.ADMIN.getValue()),
+                        new SimpleGrantedAuthority("ACCESS_TEST1"),
+                        new SimpleGrantedAuthority("ACCESS_TEST2")
+                        ));
+            case "manager":
+                authorities.addAll(Arrays.asList(
+                        new SimpleGrantedAuthority(Role.MANAGER.getValue()),
+                        new SimpleGrantedAuthority("ACCESS_TEST1")
+                ));
+            default:
+                authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
         }
 
         return new User(member.getLoginId(), member.getPassword(), authorities);

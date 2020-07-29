@@ -1,8 +1,5 @@
 package com.example.demo.domain;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
