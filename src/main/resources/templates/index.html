@@ -1,0 +1,12 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:insert="fragement :: headerfiles">
+    <title>demo 홈페이지</title>
+</head>
+<body>
+<header th:insert="fragement :: nav"></header>
+<a sec:authorize="isAnonymous()" href="/login">로그인</a>
+<a sec:authorize="isAnonymous()" href="/signup">회원가입</a>
+<span sec:authorize="isAuthenticated()" ><span sec:authentication="name"></span>님 환영 합니다.</span>
+<a sec:authorize="isAuthenticated()" href="/logout">로그아웃</a>
+</body>
+</html>

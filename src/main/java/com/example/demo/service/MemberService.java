@@ -70,12 +70,7 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        logger.debug(loginId);
-
         Member member = memberRepository.findByLoginId(loginId).get();
-
-        logger.debug(member.toString());
-        logger.debug(member.getPassword());
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
