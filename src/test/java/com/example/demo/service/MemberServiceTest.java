@@ -53,11 +53,4 @@ class MemberServiceTest {
     @Test
     void findOne() {
     }
-
-    @Test
-    void testJoin() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("asdf1234"));
-        System.out.println(passwordEncoder.matches( "asdf1234", "$2a$10$M3NgvkT/u7v8Yfc1Vamzr.FMASczsjEfTEA/OcJQZoS1v0dsjCrFK"));
-    }
 }

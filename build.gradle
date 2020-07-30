@@ -29,8 +29,6 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
-
-	implementation('org.springframework.session:spring-session-jdbc')
 }
 
 test {

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.config.security.UserPrincipal;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Role;
 import com.example.demo.domain.dto.MemberDTO;
@@ -72,25 +73,6 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
         Member member = memberRepository.findByLoginId(loginId).get();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        switch (member.getLoginId()) {
-            case "admin":
-                authorities.addAll(Arrays.asList(
-                        new SimpleGrantedAuthority(Role.ADMIN.getValue()),
-                        new SimpleGrantedAuthority("ACCESS_TEST1"),
-                        new SimpleGrantedAuthority("ACCESS_TEST2")
-                        ));
-            case "manager":
-                authorities.addAll(Arrays.asList(
-                        new SimpleGrantedAuthority(Role.MANAGER.getValue()),
-                        new SimpleGrantedAuthority("ACCESS_TEST1")
-                ));
-            default:
-                authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
-        }
-
-        return new User(member.getLoginId(), member.getPassword(), authorities);
+        return new UserPrincipal(member);
     }
 }

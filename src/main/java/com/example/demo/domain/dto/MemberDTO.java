@@ -14,10 +14,6 @@ public class MemberDTO {
     private String password;
 
     public Member toEntity() {
-        Member member = new Member();
-        member.setLoginId(loginId);
-        member.setPassword(password);
-
-        return member;
+        return new Member(loginId, password, "", "");
     }
 }

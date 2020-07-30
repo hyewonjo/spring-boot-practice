@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.config.security;
 
 import com.example.demo.service.MemberService;
 import org.springframework.context.annotation.Bean;
@@ -8,8 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = false)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MemberService memberService;
 
@@ -31,12 +32,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/profile/**").authenticated()
                 .antMatchers("/api/public/test1").hasAuthority("ACCESS_TEST1")
                 .antMatchers("/api/public/test2").hasAuthority("ACCESS_TEST2")
+                .antMatchers("/api/public/users").hasRole("ADMIN")
                 .antMatchers("/**").permitAll()
             .and() // 로그인 설정
                 .formLogin()
+                .loginPage("/login")
                 .permitAll()
             .and()
-                .exceptionHandling().accessDeniedPage("/access/denied");
+                .exceptionHandling().accessDeniedPage("/access/denied")
+            .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+            .and()
+                .rememberMe()
+                .tokenValiditySeconds(2592000).key("mySecretKey");
     }
 
     @Override
