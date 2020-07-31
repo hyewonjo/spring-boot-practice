@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
 <!-- Fragment #1 : Headerfiles contains css and js references -->
 <head th:fragment="headerfiles">
     <title>Demo Homepage</title>
@@ -21,20 +21,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/}"><i class="fa fa-home"></i>Home</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/profile/index}">Profile</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/admin/index}">Admin</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/management/index}">Management</a>
                 </li>
             </ul>
         </div>
         <div class="form-inline my-2 my-lg-0">
             <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">Logout</a>
-            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm">Login</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm mr-2">Login</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/signup}" class="btn btn-outline-primary my-2 my-sm-0 btn-sm">Sign Up</a>
         </div>
     </nav>
 </div>
