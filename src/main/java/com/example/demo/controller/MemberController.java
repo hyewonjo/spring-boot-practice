@@ -30,18 +30,6 @@ public class MemberController {
         return "redirect:/signup";
     }
 
-    // 로그인 성공 페이지
-    @GetMapping("/login/result")
-    public String loginResult() {
-        return "login-success";
-    }
-
-    // 로그아웃 결과 페이지
-    @GetMapping("/user/logout/result")
-    public String dispLogout() {
-        return "/logout";
-    }
-
     // 내 정보 페이지
     @GetMapping("/user/info")
     public String dispMyInfo() {
