@@ -1,4 +1,4 @@
-package com.example.demo.repository;
+package com.example.demo.member;
 
 import com.example.demo.domain.Member;
 
@@ -9,5 +9,6 @@ public interface MemberRepository {
     Member save(Member member);
     Optional<Member> findById(Long id);
     Optional<Member> findByLoginId(String loginId);
+    boolean existsByLoginId(String loginId);
     List<Member> findAll();
 }

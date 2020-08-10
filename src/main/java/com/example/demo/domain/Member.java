@@ -1,7 +1,9 @@
 package com.example.demo.domain;
 
+import com.example.demo.member.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,8 @@ public class Member{
     private Long id;
     private String loginId;
     private String password;
+    private String name;
+
     private int active;
     private String roles = "";
     private String permissions = "";
@@ -28,13 +32,20 @@ public class Member{
     protected Member() {
     }
 
-    public Member(String loginId, String password, String roles, String permissions ){
-        this.loginId = loginId;
-        this.password = password;
-        this.roles = roles;
-        this.permissions = permissions;
+//    public Member(String loginId, String password, String roles, String permissions ){
+//        this.loginId = loginId;
+//        this.password = password;
+//        this.roles = roles;
+//        this.permissions = permissions;
+//
+//        this.active = 1;
+//    }
 
-        this.active = 1;
+    public Member(MemberDTO.Request request, PasswordEncoder passwordEncoder) {
+        this.loginId = request.getLoginId();
+        this.password = passwordEncoder.encode(request.getPassword());
+        this.name = request.getName();
+        // this.roleType = request.getRoleType();
     }
 
     public List<String> getRoleList() {

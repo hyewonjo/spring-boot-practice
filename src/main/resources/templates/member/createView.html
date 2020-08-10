@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="fragments/admin/layout">
+<div layout:fragment="content">
+    <form th:action="@{/member}" method="post" th:object="${member}">
+        <table>
+            <tr>
+                <th>Login ID</th>
+                <td><input type="text" th:field="*{loginId}"></td>
+            </tr>
+            <tr>
+                <th>password</th>
+                <td><input type="password" th:field="*{password}"></td>
+            </tr>
+            <tr>
+                <th>name</th>
+                <td><input type="text" th:field="*{name}"></td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</html>
