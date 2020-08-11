@@ -24,6 +24,7 @@ public class MemberService {
         // new Member, save
         Member member = new Member(request, passwordEncoder);
         Member save = memberRepository.save(member);
+
         return MemberDTO.Response.of(save);
     }
 }

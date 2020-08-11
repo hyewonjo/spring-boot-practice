@@ -8,7 +8,10 @@
         <table>
             <tr>
                 <th>Login ID</th>
-                <td><input type="text" th:field="*{loginId}"></td>
+                <td>
+                    <input type="text" th:field="*{loginId}">
+                    <span th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}"></span>
+                </td>
             </tr>
             <tr>
                 <th>password</th>

@@ -13,10 +13,11 @@ spring:
     user:
       name: hyewonj
       password: hyewonj
-
-logging:
-  level:
-    root: debug
+mybatis:
+  mapper-locations: mybatis/mapper/*.xml
+#logging:
+#  level:
+#    root: debug
 
 #server:
 #  port: 443

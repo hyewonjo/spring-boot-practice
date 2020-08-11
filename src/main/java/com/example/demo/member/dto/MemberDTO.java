@@ -3,10 +3,14 @@ package com.example.demo.member.dto;
 import com.example.demo.domain.Member;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class MemberDTO {
 
     @Data
     public static class Request {
+        @NotNull @NotEmpty
         private String loginId;
         private String password;
         private String name;
