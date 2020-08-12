@@ -1,4 +1,4 @@
-package com.example.demo.member;
+package com.example.demo.member.repositories;
 
 //public interface SpringDataJpaMemberRepository extends JpaRepository<Member, Long>, MemberRepository {
 //    @Override

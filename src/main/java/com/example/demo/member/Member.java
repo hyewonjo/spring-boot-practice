@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.member;
 
 import com.example.demo.member.dto.MemberDTO;
 import lombok.Getter;
@@ -24,22 +24,13 @@ public class Member{
     private String loginId;
     private String password;
     private String name;
+    private Integer status;
 
-    private int active;
     private String roles = "";
     private String permissions = "";
 
     protected Member() {
     }
-
-//    public Member(String loginId, String password, String roles, String permissions ){
-//        this.loginId = loginId;
-//        this.password = password;
-//        this.roles = roles;
-//        this.permissions = permissions;
-//
-//        this.active = 1;
-//    }
 
     public Member(MemberDTO.Request request, PasswordEncoder passwordEncoder) {
         this.loginId = request.getLoginId();
@@ -62,5 +53,10 @@ public class Member{
         }
 
         return new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User[id='%d', loginId='%s', name='%s']", id, loginId, name);
     }
 }

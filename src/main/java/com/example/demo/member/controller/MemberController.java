@@ -1,5 +1,6 @@
-package com.example.demo.member;
+package com.example.demo.member.controller;
 
+import com.example.demo.member.service.MemberService;
 import com.example.demo.member.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,7 +42,7 @@ public class MemberController {
         }
 
         try {
-            memberService.createUser(request);
+            memberService.createMember(request);
             return redirectWithMessage(modelMap, "/", "회원가입이 완료되었습니다.");
         } catch (RuntimeException ex) {
             // todo back -1 하면 post /member로 가서 문제가 있음.

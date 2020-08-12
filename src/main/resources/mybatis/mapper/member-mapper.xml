@@ -3,17 +3,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.member.MemberMapperRepository">
-    <select id="findByLoginId" resultType="com.example.demo.domain.Member">
-        SELECT * FROM MEMBER WHERE LOGIN_ID = #{loginId}
+<mapper namespace="com.example.demo.member.repositories.MemberMapperRepository">
+    <select id="findById" resultType="com.example.demo.member.Member">
+        SELECT * FROM member WHERE id = #{id}
+    </select>
+
+    <select id="findByLoginId" resultType="com.example.demo.member.Member">
+        SELECT * FROM member WHERE login_id = #{loginId}
     </select>
 
     <select id="existsByLoginId" resultType="_boolean">
-        SELECT EXISTS(SELECT 1 FROM MEMBER WHERE LOGIN_ID = #{loginId})
+        SELECT EXISTS(SELECT 1 FROM member WHERE login_id = #{loginId})
     </select>
 
-    <insert id="save" parameterType="com.example.demo.domain.Member">
-        INSERT INTO MEMBER (LOGIN_ID, PASSWORD, NAME)
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.demo.member.Member">
+        INSERT INTO member (login_id, password, name)
         VALUES (#{loginId}, #{password}, #{name})
     </insert>
+    
+    <update id="update" parameterType="com.example.demo.member.Member">
+        UPDATE member
+        SET
+            name = #{name},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findAll" resultType="com.example.demo.member.dto.MemberDTO$Response">
+        SELECT * FROM member
+    </select>
+
+    <delete id="delete">
+        DELETE FROM member where id = #{id}
+    </delete>
 </mapper>
